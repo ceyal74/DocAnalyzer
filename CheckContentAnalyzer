@@ -1,0 +1,85 @@
+import static org.junit.Assert.*;
+
+import java.util.concurrent.TimeUnit;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+
+public class CheckContentAnalyzer {
+	 
+	WebDriver driver = new FirefoxDriver();
+	
+	@Before
+	public void setUp()
+	{
+	 driver.get("http://54.211.247.234/documentanalyzer/analyzer.aspx");
+	}
+
+
+	@After
+	public void tearDown()
+	{
+	    driver.close();
+	}
+	
+	
+	@Test
+	public void checkAnalyzerContent() throws InterruptedException 
+	{
+		
+		String uploadBtnXPath = "//li[@id='ctl00_MainContent_asyncUploadImagesrow0']/span/input[3]";
+		String sendReportBtn = "//form[@id='Form1']/div[5]/div[3]/table/tbody/tr[3]/td/table/tbody/tr/td/a/input"; 
+		String clearBtn = "//form[@id='Form1']/div[5]/div[3]/table/tbody/tr[3]/td/table/tbody/tr/td[2]/a/input";
+		String textBoxArea = "//form[@id='Form1']/div[5]/div[3]/table/tbody/tr[2]/td/h3"; 
+		
+		Thread.sleep(5000);
+		if ((driver.findElement(By.xpath(textBoxArea))!=null))
+			{
+			WebElement nameFromGui1 = driver.findElement(By.xpath(textBoxArea));
+			String nameFromGui = nameFromGui1.getText();
+			Thread.sleep(5000);
+			assertEquals("Xt3 Analyzer", nameFromGui);
+		}
+		
+		Assert.assertEquals("Analyzer", driver.getTitle());
+						
+	    boolean flag_uploadBtn =  driver.findElement(By.xpath(uploadBtnXPath)).isEnabled();
+	    Assert.assertTrue("Upload button is in page.",flag_uploadBtn);
+	   
+	    boolean flag_reportBtn =  driver.findElement(By.xpath(sendReportBtn)).isEnabled();
+	    Assert.assertTrue(flag_reportBtn);
+	    
+	    boolean flag_clearBtn =  driver.findElement(By.xpath(clearBtn)).isEnabled();
+	    Assert.assertTrue(flag_clearBtn);
+	
+	}
+	
+	public String IsXpathElementInPage (final String xPathOfElmnt)
+	{
+		
+		try{
+			
+			new WebDriverWait(driver,40).until(ExpectedConditions.presenceOfElementLocated(By.xpath(xPathOfElmnt)));
+			return xPathOfElmnt;
+		
+		}
+								
+		catch (Exception e) { System.out.println("Element was not found in page - skip for the next..." + xPathOfElmnt);
+		driver.manage().timeouts().implicitlyWait(0,TimeUnit.SECONDS); // reset	
+		return null;
+		}
+			
+	}
+
+	
+
+}
