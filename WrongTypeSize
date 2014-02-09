@@ -1,0 +1,130 @@
+import static org.junit.Assert.*;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+
+public class WrongTypeSize {
+
+WebDriver driver = new FirefoxDriver();
+String site = "http://54.211.247.234/documentanalyzer/analyzer.aspx";
+String uploadBtnXPath = "//li[@id='ctl00_MainContent_asyncUploadImagesrow0']/span/input[3]";
+String uploadBtnClass = "ruFileWrap ruStyled";
+String clearBtn = "//div[@id='MainContent_UploadPanel']/div/div[2]/a/input";
+
+String emailAdressText = "//form[@id='Form1']/div[5]/div[3]/div[3]/input";
+String sendReportBtn = "//form[@id='Form1']/div[5]/div[3]/div[3]/a/input";	
+
+	@Before
+	public void setUp() throws InterruptedException, AWTException
+	{
+		
+		driver.get(site);
+		Thread.sleep(5000);
+		driver.manage().window().maximize();
+		
+	}
+
+	@After
+	public void teardown()
+	{
+		driver.close();
+		
+	}
+	
+	@Test
+	public void testWrongTypes() throws InterruptedException, AWTException {
+		
+		Robot robot = new Robot();
+		
+		
+		driver.findElement(By.xpath(uploadBtnXPath)).click();
+		Thread.sleep(5000);
+		
+			
+		// Simulate a mouse click
+	   // robot.mousePress(InputEvent.BUTTON1_MASK);
+	   // robot.mouseRelease(InputEvent.BUTTON1_MASK);
+
+	    // Simulate a key press
+	    int char1 = java.awt.event.KeyEvent.VK_1;
+	    int charP = java.awt.event.KeyEvent.VK_P;
+	    int charDot = java.awt.event.KeyEvent.VK_PERIOD;
+	    int charW = java.awt.event.KeyEvent.VK_W;
+	    int charD = java.awt.event.KeyEvent.VK_D;
+	    int charO = java.awt.event.KeyEvent.VK_O;
+	    int charC = java.awt.event.KeyEvent.VK_C;
+	   
+	   
+	    int charEnter = java.awt.event.KeyEvent.VK_ENTER;
+	    
+	  // Upload P1 file from Desktop...        
+	    robot.keyPress(charP);
+	    robot.keyRelease(charP);
+	    robot.keyPress(charW);
+	    robot.keyRelease(charW);
+	    robot.keyPress(char1);
+	    robot.keyRelease(char1);
+	    robot.keyPress(charDot);
+	    robot.keyRelease(charDot);
+	    robot.keyPress(charD);
+	    robot.keyRelease(charD);
+	    robot.keyPress(charO);
+	    robot.keyRelease(charO);
+	    robot.keyPress(charC);
+	    robot.keyRelease(charC);
+	    
+	   
+	            
+	    Thread.sleep(5000);
+	    robot.keyPress(charEnter);
+	    robot.keyRelease(charEnter);
+	    
+	    Thread.sleep(3000);
+	    
+	    
+	    
+	    String xProgressBar = "//li[@id='ctl00_MainContent_asyncUploadImagesrow5']/span/span";
+	   // String byNamefileInProgressBar = "RowRemove";
+	    String blinksProgBar = "//li[@id='ctl00_MainContent_asyncUploadImagesrow0']/span/span/span";
+	    
+	   
+	    if (IsXpathElementInPage(blinksProgBar)!=null){assertTrue(driver.findElement(By.xpath(blinksProgBar)).isDisplayed());}
+	    if (IsXpathElementInPage(xProgressBar)!=null){assertEquals(driver.findElement(By.xpath(xProgressBar)).getText(), "pw1.doc");}
+	    if (IsXpathElementInPage(xProgressBar)!=null){assertTrue(driver.findElement(By.xpath(xProgressBar)).isDisplayed());}
+	    
+	    
+	  
+	}
+
+	
+	public String IsXpathElementInPage (final String xPathOfElmnt)
+	{
+		
+		try{
+			
+			new WebDriverWait(driver,15).until(ExpectedConditions.presenceOfElementLocated(By.xpath(xPathOfElmnt)));
+			return xPathOfElmnt;
+		
+		}
+								
+		catch (Exception e) { System.out.println("Element was not found in page - skip for the next..." + xPathOfElmnt);
+		driver.manage().timeouts().implicitlyWait(0,TimeUnit.SECONDS); // reset	
+		return null;
+		}
+			
+	}
+	
+	
+
+}
