@@ -1,0 +1,48 @@
+
+
+
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.*;
+
+public class AnalyzerMenu {
+
+	
+	public WebDriver driver;
+	 
+	
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		
+		
+		 Result result = JUnitCore.runClasses(AllTests.class);
+	      for (Failure failure : result.getFailures())
+	      {
+	         System.out.println(failure.toString());
+	         
+	         
+	      }
+	      System.out.println(result.wasSuccessful());
+	      
+	      
+	      
+		
+	
+		
+		
+		
+		
+
+	}
+
+}
+
+
