@@ -1,0 +1,261 @@
+import static org.junit.Assert.*;
+
+import java.awt.AWTException;
+import java.awt.Event;
+import java.awt.Robot;
+import java.awt.event.InputEvent;
+import java.util.concurrent.TimeUnit;
+
+import junit.framework.Assert;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.opera.core.systems.internal.input.KeyEvent;
+
+
+public class AnalyzerRegressionTests {
+
+	String site = "http://54.211.247.234/documentanalyzer/analyzer.aspx";
+	String uploadBtnXPath = "//li[@id='ctl00_MainContent_asyncUploadImagesrow0']/span/input[3]";
+	String uploadBtnClass = "ruFileWrap ruStyled";
+	String clearBtn = "//div[@id='MainContent_UploadPanel']/div/div[2]/a/input";
+	
+	String emailAdressText = "//form[@id='Form1']/div[5]/div[3]/div[3]/input";
+	String sendReportBtn = "//form[@id='Form1']/div[5]/div[3]/div[3]/a/input";
+	WebDriver driver = new FirefoxDriver();
+	
+
+	@Before
+	public void setUp() throws InterruptedException, AWTException
+	{
+		
+		driver.get(site);
+		Thread.sleep(5000);
+		driver.manage().window().maximize();
+		
+	}
+
+	@After
+	public void teardown()
+	{
+		driver.close();
+		
+	}
+
+	
+	@Test
+	public void testSuiteFiles() throws InterruptedException, AWTException {
+		
+		Robot robot = new Robot();
+		String gridResult = "//div[@id='ctl00_MainContent_ctl00_MainContent_RadListView1Panel']/fieldset/table/tbody/tr/td";
+		
+		driver.findElement(By.xpath(uploadBtnXPath)).click();
+		Thread.sleep(5000);
+		
+		//String fileNameTab = "//div[@id='ctl00_MainContent_RadTabStrip1']/div/ul/li[1]/a/span/span/span";
+		
+		
+			
+		// Simulate a mouse click
+      //  robot.mousePress(InputEvent.BUTTON1_MASK);
+      //  robot.mouseRelease(InputEvent.BUTTON1_MASK);
+
+        // Simulate a key press
+        
+        int charP = java.awt.event.KeyEvent.VK_P;
+        int charCtrl = java.awt.event.KeyEvent.VK_CONTROL;
+        int charA = java.awt.event.KeyEvent.VK_A;
+        int charTab = java.awt.event.KeyEvent.VK_TAB;
+        int charEnter = java.awt.event.KeyEvent.VK_ENTER;
+        
+      // Access to folder PA in desktop        
+        robot.keyPress(charP);
+        robot.keyRelease(charP);
+        robot.keyPress(charA);
+        robot.keyRelease(charA);
+        
+        Thread.sleep(3000);
+        robot.keyPress(charEnter);
+        robot.keyRelease(charEnter);
+        Thread.sleep(2000); 
+        
+        // Move with Tab, 8 times, till you point to the first file in list
+        robot.keyPress(charTab);
+        robot.keyRelease(charTab);
+        Thread.sleep(2000); 
+        robot.keyPress(charTab);
+        robot.keyRelease(charTab);
+        Thread.sleep(2000); 
+        robot.keyPress(charTab);
+        robot.keyRelease(charTab);
+        Thread.sleep(2000); 
+        robot.keyPress(charTab);
+        robot.keyRelease(charTab);
+        Thread.sleep(2000); 
+        robot.keyPress(charTab);
+        robot.keyRelease(charTab);
+        Thread.sleep(2000); 
+        robot.keyPress(charTab);
+        robot.keyRelease(charTab);
+        Thread.sleep(2000); 
+        robot.keyPress(charTab);
+        robot.keyRelease(charTab);
+        
+        Thread.sleep(2000);     
+        
+        robot.keyPress(charCtrl);
+        robot.keyPress(charA);
+        robot.keyRelease(charA);
+        robot.keyRelease(charCtrl);
+        
+        Thread.sleep(3000);
+        robot.keyPress(charEnter);
+        robot.keyRelease(charEnter);
+        
+        
+        
+        Thread.sleep(100000);
+        
+        
+        
+       // 8 files in folder 
+       for (int i=1;i<9;i++)
+       {
+    	   String temp = "//div[@id='ctl00_MainContent_RadTabStrip1']/div/ul/li[";
+    	   String counter = Integer.toString(i);
+    	   temp = temp.concat(counter);
+    	   temp = temp.concat("]/a/span/span/span");
+    	     	   
+    	   
+    	   if (this.IsXpathElementInPage(temp)!=null){driver.findElement(By.xpath(temp)).click();Thread.sleep(5000);}
+    	   else {System.out.println("The tab that should present the results of Xerox classification has time out...script stopped"); return;}
+    	   
+    	   String dataFromGridOnPAge = driver.findElement(By.xpath(gridResult)).getText();
+    	   
+    	     	   
+    	   
+    	   if (dataFromGridOnPAge.contains("P1"))
+    	   {
+    	       	   assertTrue(dataFromGridOnPAge.contains("P1"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Total Pages: 1"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Black & White Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Useful Color Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Everyday Color Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Expressive Color Pages: 1"));    	       	   
+    	   }
+    	   
+    	   if (dataFromGridOnPAge.contains("P2"))
+    	   {
+    		   assertTrue(dataFromGridOnPAge.contains("P2"));
+               assertTrue(dataFromGridOnPAge.contains("Total Pages: 6"));
+               assertTrue(dataFromGridOnPAge.contains("Black & White Pages: 1"));
+               assertTrue(dataFromGridOnPAge.contains("Useful Color Pages: 2"));
+               assertTrue(dataFromGridOnPAge.contains("Everyday Color Pages: 1"));
+               assertTrue(dataFromGridOnPAge.contains("Expressive Color Pages: 2"));  
+    	   }
+    	   
+    	   if (dataFromGridOnPAge.contains("P3"))
+    	   {
+    	       	   assertTrue(dataFromGridOnPAge.contains("P3"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Total Pages: 1"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Black & White Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Useful Color Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Everyday Color Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Expressive Color Pages: 1"));    	       	   
+    	   }
+    	  
+    	   if (dataFromGridOnPAge.contains("P4"))
+    	   {
+    	       	   assertTrue(dataFromGridOnPAge.contains("P4"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Total Pages: 2"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Black & White Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Useful Color Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Everyday Color Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Expressive Color Pages: 2"));    	       	   
+    	   }
+    	   
+    	   if (dataFromGridOnPAge.contains("P5"))
+    	   {
+    	       	   assertTrue(dataFromGridOnPAge.contains("P5"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Total Pages: 12"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Black & White Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Useful Color Pages: 5"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Everyday Color Pages: 6"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Expressive Color Pages: 1"));    	       	   
+    	   }
+           
+    	   if (dataFromGridOnPAge.contains("P6"))
+    	   {
+    	       	   assertTrue(dataFromGridOnPAge.contains("P6"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Total Pages: 1"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Black & White Pages: 1"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Useful Color Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Everyday Color Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Expressive Color Pages: 0"));    	       	   
+    	   }
+    	   
+    	   if (dataFromGridOnPAge.contains("P7"))
+    	   {
+    	       	   assertTrue(dataFromGridOnPAge.contains("P7"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Total Pages: 1"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Black & White Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Useful Color Pages: 1"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Everyday Color Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Expressive Color Pages: 0"));    	       	   
+    	   }
+    	   
+    	   if (dataFromGridOnPAge.contains("P8"))
+    	   {
+    	       	   assertTrue(dataFromGridOnPAge.contains("P8"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Total Pages: 1"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Black & White Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Useful Color Pages: 0"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Everyday Color Pages: 1"));
+    	       	   assertTrue(dataFromGridOnPAge.contains("Expressive Color Pages: 0"));    	       	   
+    	   }
+          
+    	   
+    	   
+       }
+        
+             
+        
+        
+      
+	}
+
+
+
+
+	
+	public String IsXpathElementInPage (final String xPathOfElmnt)
+	{
+		
+		try{
+			
+			new WebDriverWait(driver,70).until(ExpectedConditions.presenceOfElementLocated(By.xpath(xPathOfElmnt)));
+			return xPathOfElmnt;
+		
+		}
+								
+		catch (Exception e) { System.out.println("Element was not found in page - skip for the next..." + xPathOfElmnt);
+		driver.manage().timeouts().implicitlyWait(0,TimeUnit.SECONDS); // reset	
+		return null;
+		}
+			
+	}
+	
+	
+	
+}
+
+
